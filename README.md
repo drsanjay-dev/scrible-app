@@ -1,4 +1,4 @@
-🎨 Scrible App – Multiplayer Word Guessing & Drawing Game
+🎨 [Scrible App](scrible-app.onrender.com) – Multiplayer Word Guessing & Drawing Game
 
 A fun real-time drawing & guessing game built with **Node.js**, **Express**, and **Socket.IO**.  
 Play with friends: draw, guess the word, and see who scores the most!
@@ -21,5 +21,14 @@ Play with friends: draw, guess the word, and see who scores the most!
 
 > **Requirements:**  
 ✅ Node.js (v14+ recommended)
+
+> Install dependencies:
+> ```bash
+> npm install express socket.io
+> ```
+> Start the server:
+> ```bash
+> node server.js
+> ```
 
 
