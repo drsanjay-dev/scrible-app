@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Start | Word Guessing Game</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body class="centered">
+<div class="card">
+    <h2>🎨 Word Guessing Game</h2>
+    <input type="text" id="name" placeholder="Enter your name">
+    <button onclick="createRoom()">Create Private Room</button>
+    <button onclick="joinRandom()">Join Active Room</button>
+    <input type="text" id="codeInput" placeholder="Room code e.g. ABC123">
+    <button onclick="joinByCode()">Join by Code</button>
+</div>
+
+<script>
+async function createRoom() {
+    const name = getName(); if (!name) return;
+    const res = await fetch('/create-room'); const data = await res.json();
+    goToRoom(data.room, name);
+}
+async function joinRandom() {
+    const name = getName(); if (!name) return;
+    const res = await fetch('/active-room'); const data = await res.json();
+    goToRoom(data.room, name);
+}
+function joinByCode() {
+    const name = getName(); if (!name) return;
+    const code = document.getElementById('codeInput').value.trim().toUpperCase();
+    if (!code) return alert('Enter room code');
+    goToRoom(code, name);
+}
+function goToRoom(room, name) {
+    window.location.href = `/room.html?room=${room}&name=${encodeURIComponent(name)}`;
+}
+function getName() {
+    const n = document.getElementById('name').value.trim();
+    if (!n) alert('Enter your name!');
+    return n;
+}
+</script>
+</body>
+</html>

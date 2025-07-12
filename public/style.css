@@ -1,0 +1,175 @@
+/* Base styles */
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: sans-serif;
+    background: #f5f5f5;
+}
+
+/* Container: mobile first: column */
+.container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* Canvas area: top half on mobile */
+.board-container {
+    flex: none;
+    height: 50vh; /* half screen on mobile */
+    background: #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#board {
+    width: 100%;
+    height: 100%;
+    background: white;
+    border: 2px solid #ccc;
+    border-radius: 8px;
+    display: block;
+}
+
+/* Bottom area: split into two halves */
+.bottom-section {
+    flex: 1;
+    display: flex;
+    flex-direction: row;
+    overflow-y: auto;
+    background: #fafafa;
+}
+
+.members-tools, .chat-section {
+    flex: 1;
+    padding: 0.5em;
+    overflow-y: auto;
+}
+
+/* Add a vertical divider between members/tools and chat */
+.members-tools {
+    border-right: 1px solid #ccc;
+}
+
+/* Chat area layout */
+.chat-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.chat-box {
+    flex: 1;
+    border: 1px solid #ccc;
+    margin-bottom: 4px;
+    padding: 4px;
+    overflow-y: auto;
+    background: #fff;
+    font-size: 0.9em;
+}
+
+#chatInput {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 4px;
+}
+
+/* Scoreboard and tools */
+#roomCode {
+    font-size: 1.2em;
+    color: #333;
+    margin-bottom: 0.5em;
+}
+
+.tools button {
+    margin: 2px;
+    padding: 4px 6px;
+    cursor: pointer;
+}
+
+.tools label, .tools select {
+    font-size: 0.9em;
+    margin-top: 4px;
+}
+
+.tools select {
+    width: 100%;
+}
+
+/* Color palette */
+.colors {
+    display: grid;
+    grid-template-columns: repeat(5, 24px);
+    gap: 4px;
+    margin-bottom: 1em;
+}
+
+.color-btn {
+    width: 24px;
+    height: 24px;
+    border: none;
+    cursor: pointer;
+    outline: 1px solid #ccc;
+}
+
+/* Buttons */
+button {
+    background: #3498db;
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    margin: 4px 0;
+    cursor: pointer;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+button:active {
+    opacity: 0.8;
+}
+
+.btn-danger {
+    background: #e74c3c;
+    color: white;
+    margin-top: 8px;
+}
+
+.btn-primary {
+    background: #3498db;
+    color: white;
+}
+
+/* Desktop layout: sidebar left, canvas right */
+@media (min-width: 768px) {
+    .container {
+        flex-direction: row;
+    }
+
+    .board-container {
+        flex: 1;
+        height: 100vh;
+    }
+
+    #board {
+        width: 100%;
+        height: 100%;
+    }
+
+    .bottom-section {
+        flex-direction: column;
+        width: 25%;
+        max-width: 300px;
+        height: 100vh;
+    }
+
+    .members-tools, .chat-section {
+        flex: none;
+        width: 100%;
+        border-right: none;
+    }
+
+    .members-tools {
+        border-bottom: 1px solid #ccc;
+    }
+}

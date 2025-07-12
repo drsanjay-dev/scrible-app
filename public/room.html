@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Game Room</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+    <div class="board-container">
+        <canvas id="board"></canvas>
+    </div>
+    <div class="bottom-section">
+        <div class="members-tools">
+            <h3 id="roomCode">Room: </h3>
+            <h4>Scoreboard</h4>
+            <ul id="members"></ul>
+            <button onclick="startGame()">Start Game</button>
+
+            <h4>Tools</h4>
+            <div class="tools">
+                <button onclick="setTool('brush')">Brush</button>
+                <button onclick="setTool('fill')">Fill</button>
+                <button onclick="setTool('eraser')">Eraser</button>
+                <button onclick="clearBoard()">Clear</button>
+                <label>Eraser Size:
+                    <select id="eraserSize" onchange="changeEraserSize()">
+                        <option value="5">Small</option>
+                        <option value="10" selected>Medium</option>
+                        <option value="20">Large</option>
+                        <option value="40">X-Large</option>
+                    </select>
+                </label>
+            </div>
+
+            <h4>Colors</h4>
+            <div id="colors" class="colors"></div>
+            <button onclick="exitRoom()" class="btn-danger">Exit Room</button>
+        </div>
+        <div class="chat-section">
+            <h4>Chat / Guess</h4>
+            <div id="chatBox" class="chat-box"></div>
+            <input type="text" id="chatInput" placeholder="Type guess or chat">
+        </div>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="script.js"></script>
+</body>
+</html>
