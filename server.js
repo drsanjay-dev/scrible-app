@@ -8,7 +8,30 @@ app.use(express.static('public'));
 let rooms = {}; // roomCode -> [{id,name,points}]
 let games = {}; // roomCode -> { currentWord, drawerId }
 
-const words = ['apple', 'house', 'car', 'tree', 'cat', 'dog', 'star', 'phone', 'book', 'cup'];
+const words = [
+  'apple', 'house', 'car', 'tree', 'cat', 'dog', 'star', 'phone', 'book', 'cup',
+  'banana', 'bottle', 'laptop', 'shoe', 'hat', 'watch', 'train', 'boat', 'plane', 'cake',
+  'guitar', 'chair', 'table', 'spoon', 'fork', 'knife', 'pencil', 'pen', 'ball', 'bed',
+  'mirror', 'key', 'door', 'window', 'glove', 'sock', 'shirt', 'pants', 'bag', 'box',
+  'robot', 'clock', 'flag', 'lamp', 'candle', 'camera', 'television', 'remote', 'fan', 'kite',
+  'ice', 'snow', 'sun', 'moon', 'cloud', 'rain', 'storm', 'mountain', 'river', 'beach',
+  'island', 'desert', 'forest', 'volcano', 'cave', 'bridge', 'road', 'tower', 'castle', 'tent',
+  'zebra', 'lion', 'tiger', 'elephant', 'monkey', 'fish', 'shark', 'whale', 'dolphin', 'crab',
+  'butterfly', 'bee', 'ant', 'spider', 'snake', 'frog', 'horse', 'cow', 'pig', 'goat',
+  'chicken', 'duck', 'eagle', 'owl', 'parrot', 'penguin', 'bat', 'camel', 'kangaroo', 'panda',
+  'bicycle', 'motorcycle', 'bus', 'truck', 'helicopter', 'submarine', 'rocket', 'tractor', 'skateboard', 'scooter',
+  'toothbrush', 'toothpaste', 'soap', 'towel', 'comb', 'brush', 'shampoo', 'mirror', 'sink', 'toilet',
+  'pizza', 'burger', 'fries', 'noodles', 'rice', 'bread', 'cheese', 'egg', 'milk', 'butter',
+  'orange', 'grape', 'lemon', 'cherry', 'peach', 'mango', 'pineapple', 'watermelon', 'strawberry', 'coconut',
+  'dragon', 'ghost', 'zombie', 'vampire', 'witch', 'alien', 'robot', 'pirate', 'ninja', 'knight',
+  'doctor', 'nurse', 'police', 'firefighter', 'chef', 'teacher', 'farmer', 'pilot', 'soldier', 'astronaut',
+  'balloon', 'gift', 'ribbon', 'crown', 'ring', 'necklace', 'bracelet', 'glasses', 'scarf', 'jacket',
+  'cookie', 'chocolate', 'candy', 'icecream', 'popcorn', 'sugar', 'salt', 'pepper', 'honey', 'jam',
+  'ladder', 'hammer', 'nail', 'screw', 'saw', 'drill', 'wrench', 'paint', 'brush', 'bucket',
+  'newspaper', 'magazine', 'ticket', 'coin', 'wallet', 'money', 'creditcard', 'calendar', 'map', 'globe',
+  'trophy', 'medal', 'ruler', 'eraser', 'notebook', 'file', 'envelope', 'sticker', 'badge', 'stamp'
+];
+
 
 app.get('/create-room', (req, res) => {
     const code = Math.random().toString(36).substring(2,8).toUpperCase();
