@@ -6,7 +6,7 @@ const io = require('socket.io')(http);
 app.use(express.static('public'));
 
 let rooms = {}; // roomCode -> [{id,name,points}]
-let games = {}; // roomCode -> { currentWord, drawerId }
+let games = {}; // roomCode -> { currentWord, drawerId, wordList, wordIndex }
 
 const words = [
   'apple', 'house', 'car', 'tree', 'cat', 'dog', 'star', 'phone', 'book', 'cup',
@@ -31,7 +31,6 @@ const words = [
   'newspaper', 'magazine', 'ticket', 'coin', 'wallet', 'money', 'creditcard', 'calendar', 'map', 'globe',
   'trophy', 'medal', 'ruler', 'eraser', 'notebook', 'file', 'envelope', 'sticker', 'badge', 'stamp'
 ];
-
 
 app.get('/create-room', (req, res) => {
     const code = Math.random().toString(36).substring(2,8).toUpperCase();
@@ -92,31 +91,50 @@ io.on('connection', (socket) => {
 function startRound(room) {
     const roomPlayers = rooms[room];
     if (!roomPlayers || roomPlayers.length < 2) return;
+
     const drawer = roomPlayers[0];
-    const word = pickWord();
-    games[room] = { currentWord: word, drawerId: drawer.id };
+    if (!games[room]) {
+        // Initialize game data
+        games[room] = {
+            drawerId: drawer.id,
+            wordList: shuffle([...words]),
+            wordIndex: 0,
+            currentWord: ''
+        };
+    }
+
+    const game = games[room];
+    const word = game.wordList[game.wordIndex];
+    game.currentWord = word;
+    game.drawerId = drawer.id;
+
     io.to(drawer.id).emit('yourWord', word);
     io.to(room).emit('newRound', { drawer: drawer.name });
+
+    game.wordIndex = (game.wordIndex + 1) % game.wordList.length;
 }
 
 function nextDrawer(room) {
     const roomPlayers = rooms[room];
     if (!roomPlayers || roomPlayers.length < 2) return;
-    const current = games[room].drawerId;
-    const idx = roomPlayers.findIndex(p => p.id === current);
-    const next = roomPlayers[(idx+1)%roomPlayers.length];
-    const word = pickWord();
-    games[room] = { currentWord: word, drawerId: next.id };
-    io.to(next.id).emit('yourWord', word);
-    io.to(room).emit('newRound', { drawer: next.name });
-}
 
-function pickWord() {
-    return words[Math.floor(Math.random()*words.length)];
+    const game = games[room];
+    const currentId = game.drawerId;
+    const idx = roomPlayers.findIndex(p => p.id === currentId);
+    const nextPlayer = roomPlayers[(idx + 1) % roomPlayers.length];
+
+    const word = game.wordList[game.wordIndex];
+    game.currentWord = word;
+    game.drawerId = nextPlayer.id;
+
+    io.to(nextPlayer.id).emit('yourWord', word);
+    io.to(room).emit('newRound', { drawer: nextPlayer.name });
+
+    game.wordIndex = (game.wordIndex + 1) % game.wordList.length;
 }
 
 function sortByPoints(arr) {
-    return [...arr].sort((a,b) => b.points - a.points);
+    return [...arr].sort((a, b) => b.points - a.points);
 }
 
 function leaveRoom(socket) {
@@ -130,6 +148,14 @@ function leaveRoom(socket) {
             io.to(room).emit('scoreboard', sortByPoints(rooms[room]));
         }
     }
+}
+
+function shuffle(array) {
+    for (let i = array.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [array[i], array[j]] = [array[j], array[i]];
+    }
+    return array;
 }
 
 const PORT = process.env.PORT || 3000;
